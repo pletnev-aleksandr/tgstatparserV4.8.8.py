@@ -124,7 +124,7 @@ def parse_groups(driver):
 
 
 def parse_page(url):
-    with webdriver.Chrome(options=options) as driver:
+    with webdriver.Chrome(executable_path=r'C:\\Users\\nwsk\\Desktop\\git\\nwsk_ru_stream\\model\\stream\\chromedriver.exe',options=options) as driver:
         driver.get(f'{url}')
         # Найти кнопку "Показать больше"
         while True:

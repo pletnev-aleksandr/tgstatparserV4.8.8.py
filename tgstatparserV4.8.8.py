@@ -160,8 +160,10 @@ class MyWidget(QWidget):
         self.options = webdriver.ChromeOptions()
         self.options.add_argument('--allow-profiles-outside-user-dir')
         self.options.add_argument('--enable-profile-shortcut-manager')
-        self.options.add_argument(r'user-data-dir=\User')
-        self.options.add_argument('--profile-directory=Profile 1')
+        user_data_dir = r'C:\Users\nwsk\AppData\Local\Google\Chrome\User Data'
+        profile_directory = 'Default'
+        self.options.add_argument(f'user-data-dir={user_data_dir}')
+        self.options.add_argument(f'profile-directory={profile_directory}')
 
         # создаём общий элемент драйвера, который будем использовать
         self.driver = None
@@ -174,7 +176,7 @@ class MyWidget(QWidget):
 
     def openFiltersPage(self):
         url = "https://tgstat.ru/channels/search"
-        self.driver = webdriver.Chrome(options=self.options)
+        self.driver = webdriver.Chrome(executable_path=r'C:\\Users\\nwsk\\Desktop\\git\\nwsk_ru_stream\\model\\stream\\chromedriver.exe',options=self.options)
         self.driver.get(f'{url}')
 
     def parseFiltersPage(self):
@@ -213,6 +215,7 @@ class MyWidget(QWidget):
         except Exception as e:
             self.driver.quit()
             self.driver = None
+            print("ERROR")
             print(e)
 
 
@@ -233,9 +236,6 @@ class MyWidget(QWidget):
             # Ожидание загрузки новой информации
             time.sleep(6)
 
-            # Получить HTML обновленной страницы
-            self.driver.quit()
-            self.driver = None
             # Парсить HTML с помощью BeautifulSoup
             soup = BeautifulSoup(html, 'html.parser')
 
@@ -262,10 +262,15 @@ class MyWidget(QWidget):
                 for link in ChanelCloseLinks:
                     file.write(f"{link}\n")
 
+            # Получить HTML обновленной страницы
+            self.driver.quit()
+            self.driver = None
+
         except Exception as e:
             self.driver.quit()
             self.driver = None
             print(e)
+            print("ERROR")
             return "ошибка парснига"
 
     def parse_groups(self, url):
@@ -324,11 +329,13 @@ class MyWidget(QWidget):
             self.driver.quit()
             self.driver = None
             print(e)
+            print("ERROR")
             return "ошибка парсинга"
 
     def parsing(self, url, mode):
         try:
-            self.driver = webdriver.Chrome(options=self.options)
+            self.driver = webdriver.Chrome(executable_path=r'C:\\Users\\nwsk\\Desktop\\git\\nwsk_ru_stream\\model\\stream\\chromedriver.exe',
+                                options=self.options)
             self.driver.get(f'{url}')
 
             if mode == 'каналы и чаты':
